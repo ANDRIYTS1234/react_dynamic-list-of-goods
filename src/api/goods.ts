@@ -4,14 +4,17 @@ import { Good } from '../types/Good';
 const API_URL = `https://mate-academy.github.io/react_dynamic-list-of-goods/goods.json`;
 
 export function getAll(): Promise<Good[]> {
+  return fetch(API_URL)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Loading error: ${response.statusText}`);
+      }
 
-  return fetch(API_URL).then(response => {
-    if (!response.ok) {
-      throw new Error(`Loading error: ${response.statusText}`)
-    }
-
-    return response.json();
-  });
+      return response.json();
+    })
+    .catch(error => {
+      throw new Error(error.message || 'Unknown error occurred');
+    });
 }
 
 export const get5First = () => {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMemo } from 'react';
 import { Good } from './types/Good';
 
 type Props = {
@@ -8,10 +7,12 @@ type Props = {
 
 export const GoodsList = React.memo<Props>(({ goods }) => (
   <ul>
-    {goods.map(good => (
+    {goods.map((good: Good) => (
       <li key={good.id} data-cy="good" style={{ color: good.color }}>
         {good.name}
       </li>
     ))}
   </ul>
 ));
+
+GoodsList.displayName = 'GoodsList';
