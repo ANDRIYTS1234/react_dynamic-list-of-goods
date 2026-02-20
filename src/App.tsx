@@ -10,6 +10,8 @@ import { Good } from './types/Good';
 
 export const App: React.FC = () => {
   const [goods, setGoods] = useState<Good[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   return (
     <div className="App">
@@ -18,7 +20,15 @@ export const App: React.FC = () => {
       <button
         type="button"
         data-cy="all-button"
-        onClick={() => getAll().then(result => setGoods(result))}
+        onClick={() => {
+          setIsLoading(true);
+          setErrorMessage('');
+
+          getAll()
+            .then(result => setGoods(result))
+            .catch(error1 => setErrorMessage(error1.message))
+            .finally(() => setIsLoading(false));
+        }}
       >
         Load all goods
       </button>
@@ -26,7 +36,15 @@ export const App: React.FC = () => {
       <button
         type="button"
         data-cy="first-five-button"
-        onClick={() => get5First().then(result => setGoods(result))}
+        onClick={() => {
+          setIsLoading(true);
+          setErrorMessage('');
+
+          get5First()
+            .then(result => setGoods(result))
+            .catch(error1 => setErrorMessage(error1.message))
+            .finally(() => setIsLoading(false));
+        }}
       >
         Load 5 first goods
       </button>
@@ -34,10 +52,22 @@ export const App: React.FC = () => {
       <button
         type="button"
         data-cy="red-button"
-        onClick={() => getRedGoods().then(result => setGoods(result))}
+        onClick={() => {
+          setIsLoading(true);
+          setErrorMessage('');
+
+          getRedGoods()
+            .then(result => setGoods(result))
+            .catch(error1 => setErrorMessage(error1.message))
+            .finally(() => setIsLoading(false));
+        }}
       >
         Load red goods
       </button>
+
+      {isLoading && <p>Loading...</p>}
+
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
 
       <GoodsList goods={goods} />
     </div>
